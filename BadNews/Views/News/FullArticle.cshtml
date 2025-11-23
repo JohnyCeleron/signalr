@@ -1,8 +1,6 @@
-﻿@using BadNews.Elevation
+﻿@using BadNews.BlazorComponents
+@using BadNews.Elevation
 @model BadNews.Models.News.FullArticleModel
-
-<script src="/lib/jquery/dist/jquery.min.js"></script>
-<div id="comments" />
 
 <main role="main" class="container">
     <div class="row">
@@ -15,11 +13,15 @@
                 @if (ViewContext.IsElevated())
                 {
                     <form class="mb-4" onsubmit="return confirm('Удалить новость?')"
-                        asp-controller="Editor" asp-action="DeleteArticle" asp-route-id="@(Model.Article.Id)">
+                          asp-controller="Editor" asp-action="DeleteArticle" asp-route-id="@(Model.Article.Id)">
                         <button type="submit" class="btn-danger">Удалить</button>
                     </form>
                 }
                 @Html.Raw(Model.Article.ContentHtml)
+            </div>
+            
+            <div id="comments">
+                @(await Html.RenderComponentAsync<Comments>(RenderMode.ServerPrerendered))
             </div>
         </div>
 
